@@ -1,0 +1,17 @@
+{
+  "name": "result",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "express": "^5.3.0",
+    "pg": "^8.23.1",
+    "socket.io": "^4.8.4"
+  }
+}
