@@ -3,9 +3,20 @@ kind: Gateway
 metadata:
   name: voting-gateway
   namespace: voting-app
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   gatewayClassName: nginx
   listeners:
     - name: http
       port: 80
       protocol: HTTP
+    - name: https
+      port: 443
+      protocol: HTTPS
+      hostname: hilal.ironlabs.online
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: voting-app-tls
+            kind: Secret
