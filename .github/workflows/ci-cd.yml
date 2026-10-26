@@ -48,3 +48,41 @@ jobs:
           context: ./${{ matrix.service }}
           push: true
           tags: ${{ vars.DOCKERHUB_USERNAME }}/${{ matrix.service }}:${{ github.sha }}  
+  deploy:
+    name: Deploy to EKS
+    needs: build
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v7
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Connect kubectl to the cluster
+        run: aws eks update-kubeconfig --name ${{ vars.EKS_CLUSTER_NAME }} --region ${{ vars.AWS_REGION }}
+
+      - name: Point manifests to the new images
+        run: |
+          for svc in vote result worker; do
+            sed -i "s|image: .*/$svc:.*|image: ${{ vars.DOCKERHUB_USERNAME }}/$svc:${{ github.sha }}|" k8s/app/$svc.yaml
+          done
+          grep -n "image:" k8s/app/*.yaml
+
+      - name: Apply manifests
+        run: kubectl apply -f k8s/app/
+
+      - name: Wait for rollout
+        run: |
+          for d in redis vote result worker; do
+            kubectl rollout status deployment/$d -n voting-app --timeout=180s
+          done
+          kubectl rollout status statefulset/db -n voting-app --timeout=180s
