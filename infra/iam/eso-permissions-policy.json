@@ -1,0 +1,8 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [{
+    "Effect": "Allow",
+    "Action": ["ssm:GetParameter", "ssm:GetParameters", "ssm:GetParametersByPath"],
+    "Resource": "arn:aws:ssm:us-east-1:686699774218:parameter/voting-app/hilal/*"
+  }]
+}
