@@ -25,11 +25,11 @@ body{
 }
 
 #background-stats-1{
-  background-color: #e65100;
+  background-color: #2196f3;
 }
 
 #background-stats-2{
-  background-color: #7b1fa2;
+  background-color: #00cbca;
 }
 
 #content-container{
@@ -86,17 +86,15 @@ body{
 
 #choice .choice .label{
   text-transform: uppercase;
-  font-size: 28px;
-  line-height: 1.2;
 }
 
 #choice .choice.dogs{
-  color: #7b1fa2;
+  color: #00cbca;
   float: right;
 }
 
 #choice .choice.cats{
-  color: #e65100;
+  color: #2196f3;
   float: left;
 }
 #background-stats{
