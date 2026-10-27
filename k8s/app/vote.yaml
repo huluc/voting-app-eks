@@ -31,6 +31,11 @@ spec:
           image: hserindik/vote:manual
           ports:
             - containerPort: 80
+          env:
+            - name: OPTION_A
+              value: "Deploy on Friday"
+            - name: OPTION_B
+              value: "Never on Friday"
           resources:
             requests:
               cpu: 50m
